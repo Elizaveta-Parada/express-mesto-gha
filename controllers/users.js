@@ -21,31 +21,35 @@ module.exports.addNewUser = (req, res) => {
 };
 
 module.exports.getUserById = (req, res) => {
-  User.findById(req.params.userId)
-    .then((user) => {
-      if (!user) {
-        return res.status(404).send({ message: 'Пользователь не найден' });
-      }
-      return res.send(user);
-    })
-    .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
+  if (req.params.userId.lenght === 24) {
+    User.findById(req.params.userId)
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({ message: 'Пользователь не найден' });
+        }
+        return res.send(user);
+      })
+      .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
+  }
+  return res.status(400).send({ message: 'Введены не корректные данные' });
 };
 
 module.exports.editUser = (req, res) => {
   const { name, about } = req.body;
   if (req.user._id) {
     User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
-      .then((user) => res.send(user))
+      .then((user) => res.status(201).send(user))
       .catch((err) => {
         if (err.name === 'validationError') {
           return res.status(400).send({
             message: `${Object.values(err.errors).map(() => err.message).join(', ')}`,
           });
         }
-        return res.status(404).send({ message: 'Пользователь не найден' });
+        // return res.status(404).send({ message: 'Пользователь не найден' });
+        return res.status(500).send({ message: 'На сервере произошла ошибка' });
       });
   }
-  return res.status(500).send({ message: 'На сервере произошла ошибка' });
+  // return res.status(500).send({ message: 'На сервере произошла ошибка' });
 };
 
 module.exports.editAvatar = (req, res) => {
