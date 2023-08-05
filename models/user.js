@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
     require: true,
     validate: { // опишем свойство validate
       validator(url) {
-        return /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(url);
+        return /^(?:http(s)?:\/\/)/.test(url);
       },
       message: 'Не корректная ссылка', // когда validator вернёт false, будет использовано это сообщение
     },

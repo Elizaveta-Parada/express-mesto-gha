@@ -53,9 +53,7 @@ module.exports.putLikes = (req, res) => {
       })
       .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
   }
-  return res.status(400).send({
-    message: { message: 'Введены не корректные данные' },
-  });
+  return res.status(400).send({ message: 'Введены не корректные данные' });
 };
 
 module.exports.deleteLikes = (req, res) => {
@@ -75,7 +73,5 @@ module.exports.deleteLikes = (req, res) => {
       })
       .catch(() => res.status(500).send({ message: 'На сервере произошла ошибка' }));
   }
-  return res.status(400).send({
-    message: { message: 'Введены не корректные данные' },
-  });
+  return res.status(400).send({ message: 'Введены не корректные данные' });
 };
