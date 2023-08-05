@@ -12,7 +12,7 @@ module.exports.addNewCard = (req, res) => {
   Card.create({ name, link, owner: req.user._id })
     .then((card) => res.status(201).send(card))
     .catch((err) => {
-      if (err.name === 'validationError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({
           message: `${Object.values(err.errors).map(() => err.message).join(', ')}`,
         });
@@ -41,7 +41,7 @@ module.exports.putLikes = (req, res) => {
     .populate(['owner', 'likes'])
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'validationError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({
           message: `${Object.values(err.errors).map(() => err.message).join(', ')}`,
         });
@@ -60,7 +60,7 @@ module.exports.deleteLikes = (req, res) => {
     .populate(['owner', 'likes'])
     .then((card) => res.send(card))
     .catch((err) => {
-      if (err.name === 'validationError') {
+      if (err.name === 'ValidationError') {
         return res.status(400).send({
           message: `${Object.values(err.errors).map(() => err.message).join(', ')}`,
         });

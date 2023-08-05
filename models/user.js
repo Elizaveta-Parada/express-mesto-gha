@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-// eslint-disable-next-line import/no-extraneous-dependencies
-const isUrl = require('validator/lib/isURL');
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -19,7 +17,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     require: true,
     validate: { // опишем свойство validate
-      validator: (link) => isUrl(link),
+      validator(url) {
+        return /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_+.~#?&/=]*)$/.test(url);
+      },
       message: 'Не корректная ссылка', // когда validator вернёт false, будет использовано это сообщение
     },
   },
