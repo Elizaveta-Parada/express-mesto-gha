@@ -9,7 +9,7 @@ module.exports.getUsers = (req, res) => {
 module.exports.addNewUser = (req, res) => {
   const { name, about, avatar } = req.body;
   User.create({ name, about, avatar })
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({
@@ -39,7 +39,7 @@ module.exports.editUser = (req, res) => {
   const { name, about } = req.body;
   if (req.user._id) {
     return User.findByIdAndUpdate(req.user._id, { name, about }, { new: 'true', runValidators: true })
-      .then((user) => res.status(201).send(user))
+      .then((user) => res.send(user))
       .catch((err) => {
         if (err.name === 'ValidationError') {
           return res.status(400).send({
