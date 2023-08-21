@@ -13,7 +13,7 @@ module.exports.getUsers = (req, res, next) => {
 
 module.exports.getMeUser = (req, res, next) => {
   User.findById(req.user._id)
-    .then((user) => res.status(201).send(user))
+    .then((user) => res.status(200).send(user))
     .catch((err) => next(err));
 };
 
