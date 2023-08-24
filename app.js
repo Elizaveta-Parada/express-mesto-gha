@@ -2,8 +2,10 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const { errors } = require('celebrate');
+const helmet = require('helmet');
 const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
+const errorHandler = require('./middlewares/errorHandler');
 
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
 
@@ -17,6 +19,7 @@ mongoose.connect(DB_URL, {
   useUnifiedTopology: true,
 });
 
+app.use(helmet());
 app.use('/', require('./routes/auth'));
 
 app.use(auth);
@@ -26,16 +29,6 @@ app.use('/cards', require('./routes/cards'));
 app.use('*', (req, res, next) => { next(new NotFoundError('На сервере произошла ошибка')); });
 app.use(errors());
 
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-  res
-    .status(statusCode)
-    .send({
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
-        : message,
-    });
-  next();
-});
+app.use(errorHandler);
 
 app.listen(PORT);
