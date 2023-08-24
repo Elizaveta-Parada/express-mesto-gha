@@ -32,12 +32,12 @@ module.exports.addNewUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Пользователь уже зарегестрирован'));
+        return next(new ConflictError('Пользователь уже зарегестрирован'));
       }
       if (err.name === 'ValidationError') {
-        next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
+        return next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -52,9 +52,9 @@ module.exports.getUserById = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Введены не корректные данные'));
+        return next(new ValidationError('Введены не корректные данные'));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -64,12 +64,12 @@ module.exports.editUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
+        return next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
       }
       if (err.name === 'CastError') {
-        next(new NotFoundError('Пользователь не найден'));
+        return next(new NotFoundError('Пользователь не найден'));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -79,12 +79,12 @@ module.exports.editAvatar = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
+        return next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
       }
       if (err.name === 'CastError') {
-        next(new NotFoundError('Пользователь не найден'));
+        return next(new NotFoundError('Пользователь не найден'));
       }
-      next(err);
+      return next(err);
     });
 };
 

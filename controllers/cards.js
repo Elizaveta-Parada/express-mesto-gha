@@ -16,9 +16,9 @@ module.exports.addNewCard = (req, res, next) => {
     .then((card) => res.status(201).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
+        return next(new ValidationError(`${Object.values(err.errors).map(() => err.message).join(', ')}`));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -42,9 +42,9 @@ module.exports.deleteCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Введены не корректные данные'));
+        return next(new ValidationError('Введены не корректные данные'));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -64,9 +64,9 @@ module.exports.putLikes = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Введены не корректные данные'));
+        return next(new ValidationError('Введены не корректные данные'));
       }
-      next(err);
+      return next(err);
     });
 };
 
@@ -86,8 +86,8 @@ module.exports.deleteLikes = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new ValidationError('Введены не корректные данные'));
+        return next(new ValidationError('Введены не корректные данные'));
       }
-      next(err);
+      return next(err);
     });
 };
